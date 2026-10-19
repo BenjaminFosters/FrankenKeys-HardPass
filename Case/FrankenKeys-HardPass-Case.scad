@@ -25,6 +25,23 @@ module type_c_cutout() {
     }
 }
 
+// Railing
+
+module railing() {
+    difference() {
+        // Railing
+        // Positive
+        translate([-1.5,0,1]) {
+            cube([rp_board.x+3, rp_board.y, 0.5]);   // FIX: was +2
+        }
+
+        // Negative (taller and shifted down to avoid coplanar faces)
+        translate([1,0,0.9]) {                       // FIX: was z=1
+            cube([rp_board.x-2, rp_board.y, 0.7]);   // FIX: was x-3, height 0.5
+        }
+    }
+}
+
 union() {
     // Tab
     translate([-1.5, rp_board.y-1.25, 5]) difference() {
@@ -36,19 +53,14 @@ union() {
     }
 
     union() {
-        translate([0,1,0]) difference() {
-            // Railing
-            // Positive
-            translate([-1.5,0,1]) {
-                cube([rp_board.x+3, rp_board.y, 0.5]);   // FIX: was +2
-            }
-
-            // Negative (taller and shifted down to avoid coplanar faces)
-            translate([1,0,0.9]) {                       // FIX: was z=1
-                cube([rp_board.x-2, rp_board.y, 0.7]);   // FIX: was x-3, height 0.5
-            }
+        
+        union() {
+            // Upper Railing    
+            translate([0,1,3.5])railing();
+            // Lower Railing
+            translate([0,1,0])railing();
         }
-
+        
         difference() {
             // Board Baseline
             difference() {
@@ -69,8 +81,8 @@ union() {
                     }
                     // Underbelly Negative
                     color([1,0,0]) {
-                        translate([1,0,-1]) {
-                            cube([16,20,2]);
+                        translate([1,-1,-1]) {
+                            cube([16,22,2]);
                         }
                     }
                 }
