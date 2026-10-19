@@ -6,8 +6,8 @@ show_model = true;
 
 // Dimensions
 rp_board = [18, 23.5];      // [X width, Y length]
-usb_c_w  = 8.34 + 1;        // cutout width incl. clearance
-usb_c_h  = 2.56 + 1;        // cutout height incl. clearance
+usb_c_w  = 8.34 + 1.5;        // cutout width incl. clearance
+usb_c_h  = 2.56 + 1.5;        // cutout height incl. clearance
 usb_c_r  = 1.25;            // cutout corner radius
 
 shell_w  = rp_board.x + 3;
@@ -30,14 +30,14 @@ module cube_cx(size) {
 module shell_body() {
     color([1, 0.5, 0])
     translate([0, shell_y0, -floor_t])
-        cube_cx([shell_w, shell_l, floor_t + cavity_h]);
+        cube_cx([shell_w, shell_l, floor_t + cavity_h + 2]);
 }
 
 // Open at the front and top
 module cavity() {
     color([1, 0.5, 0])
     translate([0, shell_y0 - eps, 0])
-        cube_cx([rp_board.x + 1, rp_board.y + 1.25 + eps, cavity_h + eps]);
+        cube_cx([rp_board.x + 1, rp_board.y + 1.25 + eps, cavity_h + 2 + eps]);
 }
 
 module underbelly() {
@@ -48,7 +48,7 @@ module underbelly() {
 
 module type_c_cutout() {
     color([1, 0.5, 1])
-    translate([rp_board.x / 2 - usb_c_w / 2, rp_board.y + 2, 0.5])
+    translate([rp_board.x / 2 - usb_c_w / 2, rp_board.y + 2, 0.5/2])
     hull()
         for (x = [usb_c_r, usb_c_w - usb_c_r],
              z = [usb_c_r, usb_c_h - usb_c_r])
