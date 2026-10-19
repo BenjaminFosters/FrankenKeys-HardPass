@@ -26,54 +26,57 @@ module type_c_cutout() {
 }
 
 union() {
-// Tab
-translate([-1.5, rp_board.y-1.25, 5])difference() {
-    // Positive
-    cube([rp_board.x+3, 3, 2]);
-    
-    // Negative
-    translate([1,0,0])cube([rp_board.x+1.5, 2, 1]);
-}    
-
-
-union() {
-    translate([0,1,0])difference() {
-    // Railing
+    // Tab
+    translate([-1.5, rp_board.y-1.25, 5]) difference() {
         // Positive
-        translate([-1.5,0,1]){
-        cube([rp_board.x+2,rp_board.y,0.5]);
-        }
-        
+        cube([rp_board.x+3, 3, 2]);
+
         // Negative
-        translate([1,0,1]){
-        cube([rp_board.x - 3,rp_board.y,0.5]);
-        }}
-difference() {
-    // Board Baseline
-    difference(){
-        // Positives
-        color([1,0.5,0]) {
-            translate([0-1.5,-.5,0-2]){
-                cube([rp_board.x+3, rp_board.y + 1.25 + 1, 5 + 2]);
+        translate([1,0,0]) cube([rp_board.x+1, 2, 1]);   // FIX: was +1.5
+    }
+
+    union() {
+        translate([0,1,0]) difference() {
+            // Railing
+            // Positive
+            translate([-1.5,0,1]) {
+                cube([rp_board.x+3, rp_board.y, 0.5]);   // FIX: was +2
+            }
+
+            // Negative (taller and shifted down to avoid coplanar faces)
+            translate([1,0,0.9]) {                       // FIX: was z=1
+                cube([rp_board.x-2, rp_board.y, 0.7]);   // FIX: was x-3, height 0.5
             }
         }
 
-        // Negatives
-        union() {
-            // Body Negative
-            color([1,0.5,0]) {
-                translate([-.5,-.5,0]){
-                    cube([rp_board.x+.5, rp_board.y + 1.25,5]);
+        difference() {
+            // Board Baseline
+            difference() {
+                // Positives
+                color([1,0.5,0]) {
+                    translate([-1.5,-.5,-2]) {
+                        cube([rp_board.x+3, rp_board.y + 1.25 + 1, 5 + 2]);
+                    }
+                }
+
+                // Negatives
+                union() {
+                    // Body Negative
+                    color([1,0.5,0]) {
+                        translate([-.5,-.5,0]) {
+                            cube([rp_board.x+1, rp_board.y + 1.25, 5]);   // FIX: was +.5
+                        }
+                    }
+                    // Underbelly Negative
+                    color([1,0,0]) {
+                        translate([1,0,-1]) {
+                            cube([16,20,2]);
+                        }
+                    }
                 }
             }
-            // Underbelly Negative
-            color([1,0,0]) {
-                translate([1,0, -1]) {
-                    cube([16,20,2]);
-                }
-            }
+            // Type-C Cutout
+            type_c_cutout();
         }
     }
-    // Type-C Cutout
-    type_c_cutout();
-}}}
+}
