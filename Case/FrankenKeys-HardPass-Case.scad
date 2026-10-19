@@ -2,7 +2,7 @@
 // The Waveshare model is proprietary (STEP converted to STL with FreeCAD)
 // and is not part of this file. Set show_model = true to overlay it for fit checks.
 
-show_model = false;
+show_model = true;
 
 // Dimensions
 rp_board = [18, 23.5];      // [X width, Y length]
