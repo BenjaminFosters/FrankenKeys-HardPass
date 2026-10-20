@@ -2,7 +2,7 @@
 // The Waveshare model is proprietary (STEP converted to STL with FreeCAD)
 // and is not part of this file. Set show_model = true to overlay it for fit checks.
 
-show_model = true;
+show_model = false;
 
 // Dimensions
 rp_board = [18, 23.5];      // [X width, Y length]
@@ -82,18 +82,14 @@ module lid_tab() {
 }
 
 // Screw Hole
-module screw_hole(length = 10){
+module screw_hole(length = 1){
     difference() {
         // Negative
-        cube([screw_d + (floor_t + cavity_h + 2 - screw_d), length, floor_t + cavity_h + 2]);
+        cube([screw_d*2, length, floor_t + cavity_h + 2]);
         // Positive
-        translate([(screw_d + (floor_t + cavity_h + 2 - screw_d))/2,length, (floor_t + cavity_h + 2)/2])rotate([90])cylinder(r = screw_d/2, h = length);
+        translate([(screw_d),length, (floor_t + cavity_h + 2)/2])rotate([90])cylinder(r = screw_d/2, h = length);
     }
 }
-
-//translate([15.5,-.5,-2])screw_hole();
-translate([15.5,-.5,10])screw_hole();
-sh_body();
 
 module case_shell() {
     difference() {
@@ -102,6 +98,8 @@ module case_shell() {
         underbelly();
         type_c_cutout();
     }
+    translate([-8.3,-.5,-2])screw_hole(shell_l);
+    translate([19.5,-.5,-2])screw_hole(shell_l);
     railing(rail_z_low);
     railing(rail_z_high);
     lid_tab();
