@@ -78,6 +78,31 @@ module lid_tab() {
     }
 }
 
+screw_r = 3.4;
+screw_clearance = 7;
+
+// Orthogonal Screw Hole
+module screw_hole(){
+    difference() {
+        // Negative
+        cube([screw_r + screw_clearance,1, floor_t + cavity_h + 2]);
+        // Positive
+        translate([(screw_r + screw_clearance)/2,1, (floor_t + cavity_h + 2)/2])rotate([90])cylinder(r = screw_r);
+    }
+}
+
+// Screw Hole for Body
+module sh_body() {
+    hull() {
+    translate([0,5,0])screw_hole();
+    screw_hole();
+    }
+}
+
+//translate([15.5,-.5,-2])screw_hole();
+translate([15.5,-.5,10])screw_hole();
+sh_body();
+
 module case_shell() {
     difference() {
         shell_body();
