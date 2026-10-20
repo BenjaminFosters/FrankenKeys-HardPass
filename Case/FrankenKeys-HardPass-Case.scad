@@ -19,6 +19,9 @@ rail_t   = 0.5;
 rail_z_low  = 1;
 rail_z_high = cavity_h - rail_t;
 
+// Screw Specs
+screw_d = 3.4; // Claude Suggested, it's Diameter, not Radius
+
 eps = 0.1;                  // overshoot so boolean cuts never share faces
 $fs = 0.1;
 
@@ -78,24 +81,13 @@ module lid_tab() {
     }
 }
 
-screw_r = 3.4;
-screw_clearance = 7;
-
-// Orthogonal Screw Hole
-module screw_hole(){
+// Screw Hole
+module screw_hole(length = 10){
     difference() {
         // Negative
-        cube([screw_r + screw_clearance,1, floor_t + cavity_h + 2]);
+        cube([screw_d + (floor_t + cavity_h + 2 - screw_d), length, floor_t + cavity_h + 2]);
         // Positive
-        translate([(screw_r + screw_clearance)/2,1, (floor_t + cavity_h + 2)/2])rotate([90])cylinder(r = screw_r);
-    }
-}
-
-// Screw Hole for Body
-module sh_body() {
-    hull() {
-    translate([0,5,0])screw_hole();
-    screw_hole();
+        translate([(screw_d + (floor_t + cavity_h + 2 - screw_d))/2,length, (floor_t + cavity_h + 2)/2])rotate([90])cylinder(r = screw_d/2, h = length);
     }
 }
 
